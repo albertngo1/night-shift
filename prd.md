@@ -108,7 +108,7 @@ Each layer rewards a different time horizon:
 | 1. Payout | Cash scales with risk: high-risk patients pay 3–5x | Baseline. More money means more barricades and ammo tomorrow |
 | 2. **Occupation perks** (the main hook) | A patient who **survives to morning** gives a perk based on their job | Admitting becomes a *choice about who*, not just how many |
 | 3. Hospital rating | Stars go up with saves and down with deaths and fines | A higher rating draws a better patient pool next day: higher payouts, rarer perks |
-| 4. Cure research | Critical patients who survive add progress toward a cure | Campaign win condition. Reach 100% and the outbreak ends |
+| 4. Cure research | Critical patients who survive add progress toward a cure | Makes the day-7 Patient Zero night easier (see Campaign) |
 
 **Occupation perk examples:**
 
@@ -153,7 +153,8 @@ Each layer rewards a different time horizon:
 **Lose conditions:**
 
 1. ICU overrun (ICU lives reach 0): the night is lost.
-2. Rating hits 0 stars: the state shuts the hospital down and the campaign ends.
+2. Rating hits 0 stars: the state shuts the hospital down and the run ends.
+3. Patient Zero dies on night 7: the run ends.
 
 **Guardrail against a hopeless run:** fines can push money negative, but debt only blocks the shop. It never removes beds or roles, so a bad night stays recoverable.
 
@@ -195,6 +196,49 @@ Purchases go to a team vote at the shop, so emblems create arguments.
 | Skeleton Crew | Restock 50% off | The timer board is disabled |
 
 **Design rules:** each emblem hooks into one game event (`on_admit`, `on_patient_death`, `on_enemy_killed`, `on_power_cut`, `on_restock`). Emblems are data (`.tres`) that subscribe to a global event bus, so adding one is a data file plus at most one small script. Target **20–30 emblems** for a Steam demo, about 10 at M4.
+
+### Campaign: win condition
+
+**One run = 7 days (about 70–90 min), so a run fits in one session.** Long campaigns stall when the early loop gets repetitive and a group can't keep meeting (Albert's Barotrauma group stalled in biome 2 despite having the gear). Short runs avoid that.
+
+| Day | What's going on |
+|---|---|
+| 1–6 | Normal days and nights. Earn money, emblems and perks. Critical saves build up cure research |
+| 7 | **Final night: Patient Zero.** Keep them alive until 7am while everything attacks |
+
+**The boss is a patient you protect, not a monster you kill.** Patient Zero is the cure: a long protocol (8–10 steps) under a full siege. Cure research from days 1–6 makes the final night easier:
+
+| Cure % going in | Patient Zero |
+|---|---|
+| 0–24% | 10-step protocol, fast timer |
+| 25–74% | Fewer steps, slower timer |
+| 75%+ | Starts half-treated |
+
+**Win:** Patient Zero survives night 7. **Lose:** ICU overrun, rating hits 0 stars, or Patient Zero dies.
+
+### Replayability
+
+**Variety within a run:**
+
+1. **Choose the next day, Slay the Spire map style.** Between nights, pick the next day's contract: bus crash (many patients, big money), quiet night (shop discount), supply drop (free ammo), VIP (one rich patient, huge perk).
+2. **A different hospital per run, each with one rule.** Rural clinic (3 beds, one door), city trauma center (5 entrances), psych ward (patients wander), field-tent hospital (no walls, barricades only).
+3. **Night events:** power storm, flu season, full moon, state inspection (an inspector walks the halls, and any visible turned is a big rating hit).
+4. **Random patient pools and occupations** every day.
+5. **Emblems** (above).
+
+**Reasons to start another run:**
+
+1. **Difficulty ladder: Intern → Resident → Attending → Chief.** Each tier adds one permanent modifier (Slay the Spire Ascension style).
+2. **Unlocks:** hospitals, emblems, weapons and roles unlock from achievements (e.g. "win with zero morgue runs").
+3. **Daily seed:** same hospital, patients and events for everyone, with a Steam leaderboard.
+4. **Case packs:** Navo and dcai add new conditions over time. Content is data, so a case is a file, not code.
+5. **Hall of fame:** a lobby wall of every Patient Zero saved and who was on shift.
+
+**Session rules:**
+
+- Save between days. A run can pause after day 4 and continue next week.
+- Drop in/out between days. A late joiner takes the next open role.
+- No permanent character levels. Everyone starts every run equal (Barotrauma's talent gap made newcomers bounce).
 
 ### Enemies
 
@@ -311,8 +355,9 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 |---|---|---|
 | M2: 4 players | Steam lobbies, Nurse + Maintenance, power cuts + flashlights | +4 weekends |
 | M3: Full night | All 5 enemies, all 10 weapons, full timeline, 8–10 conditions, occupation perks, cause multipliers + contagion | +6 weekends |
-| M4: Campaign | Multi-day runs, ~10 emblems, hospital rating, cure research win condition, layout editing, night modifiers | +6 weekends |
-| M5: Steam demo | Proximity voice, achievements, store page, Next Fest | +4 weekends |
+| M4: Campaign | 7-day runs, Patient Zero final night, day-contract map, ~10 emblems, hospital rating, cure research, night events | +6 weekends |
+| M5: Steam demo | Proximity voice, achievements, store page, Next Fest, difficulty ladder, 2 hospitals |
+| Post-launch | Daily seed + leaderboard, unlocks, more hospitals, case packs, hall of fame | ongoing | +4 weekends |
 
 ## 9. Open questions
 

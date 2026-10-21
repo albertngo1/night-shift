@@ -216,7 +216,7 @@ footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid v
       <tr><td>Payout</td><td>High-risk patients pay 3–5x</td></tr>
       <tr><td>Job perk</td><td>Survive to morning and they give a one-time perk based on their job</td></tr>
       <tr><td>Rating</td><td>More saves bring better patients tomorrow</td></tr>
-      <tr><td>Cure</td><td>Critical saves move the cure forward. Reach 100% to win the campaign</td></tr>
+      <tr><td>Cure</td><td>Critical saves build cure research, which makes the final night easier</td></tr>
     </tbody>
   </table></div>
   <div class="table"><table>
@@ -270,6 +270,7 @@ footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid v
   <ul class="list">
     <li><strong>The ICU is overrun:</strong> the night is lost.</li>
     <li><strong>Your rating hits zero stars:</strong> the state shuts the hospital down and the run is over.</li>
+    <li><strong>Patient Zero dies on night 7:</strong> the run is over.</li>
   </ul>
   <p class="muted">Fines can put you in debt, but debt only locks the shop. You never lose beds or roles, so a bad night is always recoverable. The morning report lists every death: <em>"Bed 3: chest pain, WebMD misdiagnosis, −$800, nurse: Andy."</em></p>
 </section>
@@ -297,6 +298,46 @@ footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid v
       <tr><td>Skeleton Crew</td><td>Half-price restocking</td><td>No timer board</td></tr>
     </tbody>
   </table></div>
+</section>
+
+<section>
+  <h2><span class="n">07b</span>Winning a run</h2>
+  <p>A run is <strong>7 days, about 70–90 minutes</strong>, so you finish one in a single session.</p>
+  <div class="table"><table>
+    <thead><tr><th>Day</th><th>What's going on</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1–6</td><td>Normal days and nights. Earn money, emblems and perks. Critical saves build up cure research</td></tr>
+      <tr><td class="mono">7</td><td><span class="tag red">Patient Zero</span> Keep them alive until 7am while everything attacks</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><p><strong>The final boss is a patient you protect, not a monster you kill.</strong> Patient Zero is the cure: a long 8–10 step treatment, done during a full siege.</p></div>
+  <div class="table"><table>
+    <thead><tr><th>Cure research</th><th>Patient Zero on night 7</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">0–24%</td><td>10 steps, dying fast</td></tr>
+      <tr><td class="mono">25–74%</td><td>Fewer steps, dying slower</td></tr>
+      <tr><td class="mono">75%+</td><td>Arrives half-treated</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Win:</strong> Patient Zero survives the night. <strong>Lose:</strong> the ICU is overrun, the rating hits zero, or Patient Zero dies.</p>
+
+  <h3>Every run is different</h3>
+  <ul class="list">
+    <li><strong>Pick tomorrow:</strong> between nights, choose the next day: a bus crash (lots of patients, lots of money), a quiet night (shop discount), a supply drop (free ammo) or a VIP (one rich patient, huge perk)</li>
+    <li><strong>Different hospitals:</strong> rural clinic (3 beds, one door), city trauma center (5 entrances), psych ward (patients wander), field tent (no walls)</li>
+    <li><strong>Night events:</strong> power storms, flu season, full moon, and a state inspector walking the halls</li>
+    <li><strong>New patients and jobs every day</strong>, plus emblems that change how you play</li>
+  </ul>
+
+  <h3>Reasons to play again</h3>
+  <ul class="list">
+    <li><strong>Difficulty ladder:</strong> Intern → Resident → Attending → Chief</li>
+    <li><strong>Unlocks:</strong> new hospitals, emblems and weapons from challenges like "win with zero morgue runs"</li>
+    <li><strong>Daily run:</strong> same hospital and patients for everyone that day, with a leaderboard</li>
+    <li><strong>New cases</strong> from Navo and dcai over time</li>
+    <li><strong>Hall of fame</strong> wall of every Patient Zero you saved and who was on shift</li>
+  </ul>
+  <p class="muted">You can save between days and pick it up next week. Friends can join or leave between days. There are no permanent character levels, so nobody falls behind.</p>
 </section>
 
 <section>
@@ -358,8 +399,9 @@ footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid v
     <tbody>
       <tr><td>4 players</td><td>Steam invites, Nurse + Maintenance, power cuts</td><td class="mono">+4 wknd</td></tr>
       <tr><td>Full night</td><td>All enemies and weapons, 8–10 conditions, job perks</td><td class="mono">+6 wknd</td></tr>
-      <tr><td>Campaign</td><td>Multi-day runs, emblems, rating, the cure</td><td class="mono">+6 wknd</td></tr>
-      <tr><td>Steam demo</td><td>Proximity voice, achievements, store page</td><td class="mono">+4 wknd</td></tr>
+      <tr><td>Campaign</td><td>7-day runs, Patient Zero, pick-tomorrow map, emblems, rating</td><td class="mono">+6 wknd</td></tr>
+      <tr><td>Steam demo</td><td>Proximity voice, achievements, store page, difficulty ladder</td><td class="mono">+4 wknd</td></tr>
+      <tr><td>After launch</td><td>Daily run, unlocks, more hospitals, new cases</td><td class="mono">ongoing</td></tr>
     </tbody>
   </table></div>
 </section>
