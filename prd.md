@@ -356,8 +356,8 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 | M2: 4 players | Steam lobbies, Nurse + Maintenance, power cuts + flashlights | +4 weekends |
 | M3: Full night | All 5 enemies, all 10 weapons, full timeline, 8–10 conditions, occupation perks, cause multipliers + contagion | +6 weekends |
 | M4: Campaign | 7-day runs, Patient Zero final night, day-contract map, ~10 emblems, hospital rating, cure research, night events | +6 weekends |
-| M5: Steam demo | Proximity voice, achievements, store page, Next Fest, difficulty ladder, 2 hospitals |
-| Post-launch | Daily seed + leaderboard, unlocks, more hospitals, case packs, hall of fame | ongoing | +4 weekends |
+| M5: Steam demo | Proximity voice, achievements, store page, Next Fest, difficulty ladder, 2 hospitals | +4 weekends |
+| Post-launch | Daily seed + leaderboard, unlocks, more hospitals, case packs, hall of fame | ongoing |
 
 ## 9. Open questions
 
