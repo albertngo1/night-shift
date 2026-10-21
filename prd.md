@@ -275,3 +275,29 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 | M3: Full night | All 5 enemies, all 10 weapons, full timeline, 8–10 conditions, occupation perks | +6 weekends |
 | M4: Campaign | Multi-day runs, ~10 emblems, hospital rating, cure research win condition, layout editing, night modifiers | +6 weekends |
 | M5: Steam demo | Proximity voice, achievements, store page, Next Fest | +4 weekends |
+
+## 9. Open questions
+
+**Everyone**
+- E1. Goal: just for us, or aim for Steam?
+- E2. How many hours a week can each person realistically give?
+- E3. Tone: funny-scary or actually scary? How gory?
+- E4. Art style: pixel art or clean flat shapes?
+- E5. Is "Night Shift" the name?
+
+**Doctors**
+- D1. 3 conditions treatable in exactly 3 steps (for the MVP)
+- D2. Weirdest case that turned out to be something dumb?
+- D3. Which jobs would make funny occupation perks?
+- D4. What inaccuracy would make you cringe, and what's fine to fudge?
+
+**Game design**
+- G1. What happens when a player dies? Spectate until morning, or come back as a turned?
+- G2. Friendly fire: on, off, or only the bone saw?
+- G3. How many days in a full campaign? (One day + night ≈ 10 min)
+- G4. Is the hospital layout fixed, or rearranged between days?
+
+**Devs**
+- V1. Who owns what: networking, gameplay systems, content tools?
+- V2. Lock in Godot, or does anyone want to argue for Unity?
+- V3. Which night works for a weekly playtest?
