@@ -292,10 +292,11 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 - D4. What inaccuracy would make you cringe, and what's fine to fudge?
 
 **Game design**
-- G1. What happens when a player dies? Spectate until morning, or come back as a turned?
-- G2. Friendly fire: on, off, or only the bone saw?
-- G3. How many days in a full campaign? (One day + night ≈ 10 min)
-- G4. Is the hospital layout fixed, or rearranged between days?
+- G1. Camera: top-down, third person, or first person? (Current plan: top-down; first person is scariest but hides the map)
+- G2. What happens when a player dies? Spectate until morning, or come back as a turned?
+- G3. Friendly fire: on, off, or only the bone saw?
+- G4. How many days in a full campaign? (One day + night ≈ 10 min)
+- G5. Is the hospital layout fixed, or rearranged between days?
 
 **Devs**
 - V1. Who owns what: networking, gameplay systems, content tools?
