@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Night Shift</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: single reading column like a patient chart; sections are chart tabs, triage-tag colors carry meaning */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --fg:#14211f; --muted:#56655f; --line:#cfd9d6;
+  --accent:#0f6b63;           /* scrubs teal */
+  --tag-red:#c4372f; --tag-yellow:#b8860b; --tag-green:#2e7d4f; --tag-black:#2a2f2e;
+  --display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1517; --surface:#132024; --fg:#e3ecea; --muted:#93a6a1; --line:#24363a;
+  --accent:#4fc1b3; --tag-red:#ef6a5f; --tag-yellow:#e2b33c; --tag-green:#5cc58a; --tag-black:#a9b4b1;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1517; --surface:#132024; --fg:#e3ecea; --muted:#93a6a1; --line:#24363a;
+  --accent:#4fc1b3; --tag-red:#ef6a5f; --tag-yellow:#e2b33c; --tag-green:#5cc58a; --tag-black:#a9b4b1;
+  color-scheme:dark}
+
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--body)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:2rem 4rem;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:2.75rem}
+
+header{display:flex;flex-direction:column;gap:.75rem}
+.eyebrow{font:500 .75rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font:800 clamp(3.25rem,14vw,5.5rem)/.9 var(--display);margin:0;letter-spacing:.01em;text-transform:uppercase}
+.ecg{width:100%;height:42px;display:block}
+.ecg polyline{fill:none;stroke:var(--tag-red);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pitch{font:italic 400 1.25rem/1.4 var(--body);margin:0;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font:500 .75rem/1 var(--mono);padding:.4rem .6rem;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--surface)}
+
+section{display:flex;flex-direction:column;gap:1rem}
+h2{font:800 1.9rem/1 var(--display);text-transform:uppercase;letter-spacing:.02em;margin:0;text-wrap:balance;
+  display:flex;align-items:baseline;gap:.6rem}
+h2 .n{font:500 .8rem/1 var(--mono);color:var(--accent);letter-spacing:.08em}
+h3{font:600 1.05rem/1.3 var(--body);margin:.5rem 0 0}
+p{margin:0;max-width:65ch}
+.muted{color:var(--muted)}
+strong{font-weight:600}
+
+.callout{border-left:4px solid var(--tag-yellow);background:var(--surface);padding:.9rem 1rem;border-radius:0 6px 6px 0}
+.callout p{max-width:none}
+
+.table{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.6rem .75rem;border-bottom:1px solid var(--line)}
+th{font:500 .72rem/1.2 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+.mono{font-family:var(--mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+
+ol.steps,ul.list{margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:.5rem;max-width:65ch}
+
+.loop{display:grid;gap:.5rem}
+.loop .stage{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.75rem 1rem;display:flex;gap:.75rem;align-items:baseline;flex-wrap:wrap}
+.loop .stage b{font:800 1.2rem/1 var(--display);text-transform:uppercase;letter-spacing:.03em;min-width:8.5rem}
+.loop .arrow{font:500 .8rem/1 var(--mono);color:var(--muted);padding-left:1rem}
+.loop .stage.bad{border-color:var(--tag-red)}
+.loop .stage.bad b{color:var(--tag-red)}
+
+.tag{display:inline-block;font:500 .7rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:.3rem .45rem;border-radius:4px;color:#fff;vertical-align:middle}
+.tag.red{background:var(--tag-red)} .tag.yellow{background:var(--tag-yellow)} .tag.green{background:var(--tag-green)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tag{color:#0c1517}}
+:root[data-theme="dark"] .tag{color:#0c1517}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.75rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.card .k{font:500 .72rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.card .v{font:800 1.5rem/1.05 var(--display);text-transform:uppercase}
+
+.wristband{background:var(--surface);border:1px solid var(--line);border-left:10px solid var(--tag-red);border-radius:8px;padding:1rem;display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;max-width:26rem}
+.wristband .k{font:500 .72rem/1.6 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+details{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+summary{cursor:pointer;padding:.85rem 1rem;font-weight:600}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details > div{padding:0 1rem 1rem;display:flex;flex-direction:column;gap:1rem}
+details .table{border-radius:6px}
+code{font:500 .85em var(--mono)}
+
+footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Game design doc · concept · Oct 2026</span>
+  <h1>Night<br>Shift</h1>
+  <svg class="ecg" viewBox="0 0 600 42" preserveAspectRatio="none" aria-hidden="true">
+    <polyline points="0,24 120,24 135,24 145,10 155,36 165,4 175,30 185,24 300,24 315,24 325,10 335,36 345,4 355,30 365,24 470,24 490,24 600,24"/>
+  </svg>
+  <p class="pitch">Keep your patients alive. The ones you lose come back for you.</p>
+  <div class="meta">
+    <span class="chip">Online co-op · 2–6 players</span>
+    <span class="chip">Top-down 2D</span>
+    <span class="chip">Godot 4 → Steam</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">01</span>The game</h2>
+  <p>By day, an understaffed hospital admits patients and restocks, and you decide how many patients to risk taking on. By night, something is wrong with the patients. You treat them with real multi-step protocols against a ticking timer. The ones you fail flatline and get back up as <strong>the turned</strong>.</p>
+  <p>Saved patients pay out insurance money, which buys barricades and weapons to hold the hallways against the turned and against hordes from outside. Survive until the 7am shift change, collect rewards from the patients who made it, then do it again.</p>
+  <div class="cards">
+    <div class="card"><span class="k">Navo · dcai</span><span class="v">Doctors</span><span class="muted">Write the cases and protocols. Keep it medically real.</span></div>
+    <div class="card"><span class="k">dyang</span><span class="v">Playtester</span><span class="muted">If it isn't fun for a normal person, it isn't fun.</span></div>
+    <div class="card"><span class="k">Albert · Andy · Li</span><span class="v">Devs</span><span class="muted">Build it.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span>One round</h2>
+  <p>One day plus one night is a round. Day is calm and about decisions. Night is when everything happens.</p>
+  <div class="table"><table>
+    <thead><tr><th>Phase</th><th>Length</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td>Morning report</td><td class="mono">30s</td><td>Survivors discharged, rewards paid, fines charged</td></tr>
+      <tr><td>Day</td><td class="mono">~3 min</td><td>No enemies. Admit patients, restock, build barricades</td></tr>
+      <tr><td>Dusk</td><td class="mono">30s</td><td>Last call. Admissions close, doors lock</td></tr>
+      <tr><td>Night</td><td class="mono">5–8 min</td><td>Patients deteriorate, ambulances arrive, hordes hit</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The night</h3>
+  <div class="table"><table>
+    <thead><tr><th>Time</th><th>Patients</th><th>Horde</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">23:00–01:00</td><td>Admitted patients start deteriorating</td><td>None</td></tr>
+      <tr><td class="mono">01:00–03:00</td><td>Ambulance emergencies</td><td>Small waves</td></tr>
+      <tr><td class="mono">03:00</td><td><span class="tag red">Trauma surge</span></td><td><span class="tag red">Huge wave</span></td></tr>
+      <tr><td class="mono">04:00–06:00</td><td>Leftovers</td><td>Stragglers + your failures</td></tr>
+      <tr><td class="mono">07:00</td><td>Shift change</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">03</span>How it fits together</h2>
+  <div class="loop" role="list">
+    <div class="stage" role="listitem"><b>Treat</b><span>Save a patient and get paid</span></div>
+    <div class="arrow" aria-hidden="true">↓ money</div>
+    <div class="stage" role="listitem"><b>Build</b><span>Buy barricades, ammo, supplies</span></div>
+    <div class="arrow" aria-hidden="true">↓ walls hold the hallways</div>
+    <div class="stage" role="listitem"><b>Fight</b><span>Hold off the horde with weapons</span></div>
+    <div class="arrow" aria-hidden="true">↓ every second fighting is a second not treating</div>
+    <div class="stage bad" role="listitem"><b>Turn</b><span>Untreated patients rise inside your walls, and the horde grows</span></div>
+  </div>
+  <h3>Five rules that tie it together</h3>
+  <ol class="steps">
+    <li><strong>Hallways do double duty.</strong> Barricades steer the horde, but they also block your own gurneys.</li>
+    <li><strong>Two horde sources.</strong> Waves hit the doors from outside. Patients you fail rise behind your walls, so turtling doesn't work.</li>
+    <li><strong>Saved patients fight back.</strong> A discharged patient grabs a mop and defends for 60 seconds.</li>
+    <li><strong>The horde breaks things.</strong> Lose the pharmacy and you have no meds until it's fixed.</li>
+    <li><strong>Screamers speed up dying.</strong> Every patient near one deteriorates faster.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">04</span>Treatments</h2>
+  <p>Each condition is a short protocol the doctors write. You carry one thing at a time, and a gurney takes two people.</p>
+  <div class="table"><table>
+    <thead><tr><th>Condition</th><th>Protocol</th></tr></thead>
+    <tbody>
+      <tr><td>Chest pain</td><td>EKG → aspirin from pharmacy → wheel to cath lab</td></tr>
+      <tr><td>Broken arm</td><td>X-ray → splint from supply closet → cast station</td></tr>
+      <tr><td>Overdose</td><td>Narcan → monitor → don't leave them alone</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">05</span>Roles</h2>
+  <p>Pick any role. Two doctors or three security guards is fine. Everyone can do every task, and your role just makes you much better at one thing.</p>
+  <div class="table"><table>
+    <thead><tr><th>Role</th><th>Better at</th><th>Signature move</th><th>Everyone else</th></tr></thead>
+    <tbody>
+      <tr><td>Doctor</td><td>Diagnose fast, always right</td><td>Revive one flatlining patient</td><td>"WebMD": 3x slower, wrong 1 in 4 times</td></tr>
+      <tr><td>Nurse</td><td>Carry 2 items, fast meds</td><td>Sees nearby patient timers</td><td>Timers only on the board</td></tr>
+      <tr><td>Security</td><td>2x damage</td><td>Places barricades</td><td>Can shove</td></tr>
+      <tr><td>Maintenance</td><td>Fast builds and repairs</td><td>Restores power instantly</td><td>Repairs at 1/4 speed</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">The <strong>timer board</strong> is a spot on the map. Whoever stands there sees every patient's timer and calls out who's dying.</p>
+</section>
+
+<section>
+  <h2><span class="n">06</span>Admissions</h2>
+  <p>Every day, patient cards queue at the admissions desk. Each patient brings in money, and each one could turn at night.</p>
+  <div class="wristband" aria-label="Example patient card">
+    <span class="k">Condition</span><span>Chest pain · 3 steps</span>
+    <span class="k">Risk</span><span><span class="tag red">High</span></span>
+    <span class="k">Payout</span><span class="mono">$400</span>
+    <span class="k">Job</span><span>Electrician</span>
+  </div>
+  <p><strong>Beds are your limit.</strong> Admit past it and patients go on hallway gurneys, right in the horde's path and in the way of your own routes.</p>
+  <div class="callout"><p>Every day comes down to: <em>"The electrician is high-risk and we're out of beds. Hallway gurney?"</em></p></div>
+
+  <h3>Why take the risk</h3>
+  <div class="table"><table>
+    <thead><tr><th>Reward</th><th>What you get</th></tr></thead>
+    <tbody>
+      <tr><td>Payout</td><td>High-risk patients pay 3–5x</td></tr>
+      <tr><td>Job perk</td><td>Survive to morning and they give a one-time perk based on their job</td></tr>
+      <tr><td>Rating</td><td>More saves bring better patients tomorrow</td></tr>
+      <tr><td>Cure</td><td>Critical saves move the cure forward. Reach 100% to win the campaign</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table"><table>
+    <thead><tr><th>Patient</th><th>Perk if they survive the night</th></tr></thead>
+    <tbody>
+      <tr><td>Electrician</td><td>Next night's first power cut fixes itself</td></tr>
+      <tr><td>Cop</td><td>Leaves you their pistol</td></tr>
+      <tr><td>Contractor</td><td>3 free barricades</td></tr>
+      <tr><td>Pharma rep</td><td>30% off restocking tomorrow</td></tr>
+      <tr><td>Retired nurse</td><td>Works one night as a free nurse</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted"><strong>If they die:</strong> they turn inside that night, the family sues (a fine at the morning report), and your rating drops.</p>
+</section>
+
+<section>
+  <h2><span class="n">07</span>Emblems</h2>
+  <p>Permanent team bonuses that last the whole run, like relics in Slay the Spire. You buy them in the day shop by team vote, or earn them with a perfect night, a critical save, or cure milestones. They're what makes each run play differently.</p>
+  <h3>Build-around</h3>
+  <div class="table"><table>
+    <thead><tr><th>Emblem</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>Magnet Hospital</td><td>Runners ignore hallway gurneys, so overbooking becomes a strategy</td></tr>
+      <tr><td>Teaching Hospital</td><td>WebMD is never wrong (still slow)</td></tr>
+      <tr><td>Blood Bank</td><td>Every turned you kill drops a blood bag</td></tr>
+      <tr><td>Pneumatic Tubes</td><td>Send items between any two stations instantly</td></tr>
+      <tr><td>Union Contract</td><td>Everyone gets a second belt slot</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Trade-offs</h3>
+  <div class="table"><table>
+    <thead><tr><th>Emblem</th><th>Upside</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td>Private Equity Buyout</td><td>Double payouts</td><td>Lose a bed every night</td></tr>
+      <tr><td>Experimental Trial</td><td>Patients die 2x slower</td><td>Every death rises as a Brute</td></tr>
+      <tr><td>Skeleton Crew</td><td>Half-price restocking</td><td>No timer board</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">08</span>The turned</h2>
+  <div class="table"><table>
+    <thead><tr><th>Enemy</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Shambler</td><td>Slow, comes in numbers</td></tr>
+      <tr><td>Runner</td><td>Ignores you, grabs patients</td></tr>
+      <tr><td>Brute</td><td>Smashes barricades</td></tr>
+      <tr><td>Crawler</td><td>Uses the vents, skips your walls</td></tr>
+      <tr><td>Screamer</td><td>Makes nearby patients die faster</td></tr>
+    </tbody>
+  </table></div>
+  <p>The view is top-down, and you only see what your flashlight sees. When the power cuts, the hospital goes black except for flashlight beams.</p>
+</section>
+
+<section>
+  <h2><span class="n">09</span>Weapons</h2>
+  <p>Everything is improvised from the hospital. You have one hands slot (an item <em>or</em> a weapon) and a belt slot for a small melee weapon. Guns take both hands, so holding a gun means you're not carrying meds. Dart-gun ammo is the same sedative stock your patients need.</p>
+  <div class="table"><table>
+    <thead><tr><th>Melee</th><th>Feel</th></tr></thead>
+    <tbody>
+      <tr><td>Bedpan</td><td>Fast, weak, fits on your belt</td></tr>
+      <tr><td>IV pole</td><td>Long reach, holds a doorway</td></tr>
+      <tr><td>Fire extinguisher</td><td>Knockback cone, puts out fires</td></tr>
+      <tr><td>Defib paddles</td><td>Big stun. The same charge revives patients</td></tr>
+      <tr><td>Bone saw</td><td>Huge damage, loud enough to draw enemies</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table"><table>
+    <thead><tr><th>Ranged</th><th>Feel</th></tr></thead>
+    <tbody>
+      <tr><td>Syringe dart gun</td><td>Sedates, uses pharmacy stock</td></tr>
+      <tr><td>Nail gun</td><td>Steady damage, Maintenance makes ammo</td></tr>
+      <tr><td>Flare gun</td><td>Lights up the dark for 20 seconds</td></tr>
+      <tr><td>Saline sprayer</td><td>Pushback, refills at any sink</td></tr>
+      <tr><td>Tranq rifle</td><td>One-shots a Brute. Only one per hospital</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">10</span>First playable</h2>
+  <p>About <strong>4–5 weekends</strong>. The smallest version that tells us whether it's fun:</p>
+  <ul class="list">
+    <li>2 players online, 1 small hospital (3 beds, pharmacy, ICU, 2 hallways)</li>
+    <li>Doctor + Security, 3 conditions written by Navo and dcai</li>
+    <li>Barricades, an IV pole and a dart gun</li>
+    <li>Shamblers outside, turned patients inside</li>
+    <li>One day (5 patient cards, a 3-item shop) and one 5-minute night</li>
+  </ul>
+  <div class="callout"><p><strong>It answers two questions:</strong> does a barricade blocking your own gurney feel tense, and is a 4th patient on a hallway gurney tempting enough to argue about?</p></div>
+  <p class="muted"><strong>Done means:</strong> two people on different computers play a full night, save at least one patient, fight a wave, and someone laughs. dyang plays it with no instructions beyond "you're a doctor, save people."</p>
+
+  <h3>After that</h3>
+  <div class="table"><table>
+    <thead><tr><th>Milestone</th><th>Adds</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td>4 players</td><td>Steam invites, Nurse + Maintenance, power cuts</td><td class="mono">+4 wknd</td></tr>
+      <tr><td>Full night</td><td>All enemies and weapons, 8–10 conditions, job perks</td><td class="mono">+6 wknd</td></tr>
+      <tr><td>Campaign</td><td>Multi-day runs, emblems, rating, the cure</td><td class="mono">+6 wknd</td></tr>
+      <tr><td>Steam demo</td><td>Proximity voice, achievements, store page</td><td class="mono">+4 wknd</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">11</span>Risks</h2>
+  <div class="table"><table>
+    <thead><tr><th>Risk</th><th>Plan</th></tr></thead>
+    <tbody>
+      <tr><td>Feels like three minigames</td><td>The first playable tests the interlock before we add content</td></tr>
+      <tr><td>Six busy people</td><td>Weekend-sized goals, a playable build every week</td></tr>
+      <tr><td>Hard to join</td><td>One Steam invite click. No mods, no IP addresses</td></tr>
+      <tr><td>Too easy or too hard</td><td>dyang signs off on every milestone</td></tr>
+      <tr><td>Money if it ships</td><td>One-page split agreement before Steam setup</td></tr>
+      <tr><td>Tone</td><td>The doctors decide what's funny and what's too far</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<details>
+  <summary>Technical details (for the devs)</summary>
+  <div>
+    <div class="table"><table>
+      <tbody>
+        <tr><td>Engine</td><td>Godot 4, GDScript</td></tr>
+        <tr><td>View</td><td>Top-down 2D, <code>PointLight2D</code> + shadows for flashlights</td></tr>
+        <tr><td>Networking</td><td>Godot high-level multiplayer (<code>MultiplayerSynchronizer</code>, <code>MultiplayerSpawner</code>, RPCs)</td></tr>
+        <tr><td>Transport</td><td>ENet in dev, Steam Networking (GodotSteam) in release</td></tr>
+        <tr><td>Host model</td><td>Listen server, no dedicated servers, $0 infra</td></tr>
+        <tr><td>Voice</td><td>Steam voice → <code>AudioStreamPlayer2D</code> (post-MVP)</td></tr>
+        <tr><td>Repo / CI</td><td>GitHub + Git LFS; <code>godot-ci</code> export → <code>steam-deploy</code></td></tr>
+      </tbody>
+    </table></div>
+    <ol class="steps">
+      <li>The host is authoritative. Clients send inputs.</li>
+      <li>Own movement predicted locally. Grab/treat/build confirmed by the host, first request wins.</li>
+      <li>Enemies follow a shared flow field to the ICU. The host sends spawns + 10–20Hz snapshots, and clients interpolate.</li>
+      <li>No networked rigidbody physics. Gurneys and items are kinematic.</li>
+      <li>Hits are detected on the attacker's client, confirmed by the host. Projectiles are host-simulated.</li>
+      <li>Test with 2 local instances. Use Steam app ID 480 until the $100 Steam Direct fee.</li>
+    </ol>
+    <p>Conditions, enemies, roles, emblems and night timelines are <code>.tres</code> Resources, so the doctors can add a case without touching code. Emblems subscribe to game events (<code>on_admit</code>, <code>on_patient_death</code>, <code>on_enemy_killed</code>, …) on a global event bus.</p>
+    <p class="muted">Out of scope for the first playable: local co-op (dropped, online only), Steam integration, voice, Nurse/Maintenance, power cuts, the other 4 enemies, perks, emblems, rating, the cure, night modifiers, 3D art.</p>
+  </div>
+</details>
+
+<footer>Night Shift · design doc v0.4 · <a href="prd.md" style="color:inherit">full PRD (markdown)</a></footer>
+</div>
+</body>
+</html>
