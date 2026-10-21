@@ -229,7 +229,49 @@ footer{font:500 .75rem/1.5 var(--mono);color:var(--muted);border-top:1px solid v
       <tr><td>Retired nurse</td><td>Works one night as a free nurse</td></tr>
     </tbody>
   </table></div>
-  <p class="muted"><strong>If they die:</strong> they turn inside that night, the family sues (a fine at the morning report), and your rating drops.</p>
+</section>
+
+<section>
+  <h2><span class="n">06b</span>When a patient dies</h2>
+  <p>Every death, from any cause, costs the same five things:</p>
+  <div class="table"><table>
+    <thead><tr><th>#</th><th>Penalty</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td>No payout. Patients only pay when discharged</td><td>Instant</td></tr>
+      <tr><td class="mono">2</td><td>Their job perk is gone</td><td>Instant</td></tr>
+      <tr><td class="mono">3</td><td>They turn, unless you act in 10 seconds</td><td class="mono">+10s</td></tr>
+      <tr><td class="mono">4</td><td>The family sues: a fine × the cause multiplier</td><td>Morning</td></tr>
+      <tr><td class="mono">5</td><td>Your rating drops, so tomorrow's patients are worse</td><td>Morning</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The 10-second window</h3>
+  <ul class="list">
+    <li><span class="tag green">Code them</span> A Doctor revives them or uses the defib paddles. They're back and every penalty is cancelled.</li>
+    <li><span class="tag yellow">Morgue run</span> Two people wheel the body to the morgue. They don't turn, but you still pay the fine.</li>
+    <li><span class="tag red">Do nothing</span> They get up inside your walls, usually next to other patients.</li>
+  </ul>
+
+  <h3>How bad the fine is</h3>
+  <div class="table"><table>
+    <thead><tr><th>Cause</th><th>Fine</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Nobody treated them</td><td class="mono">1x</td><td>Neglect</td></tr>
+      <tr><td>The horde got them</td><td class="mono">0.5x</td><td>Insurance covers half</td></tr>
+      <tr><td>Died on a hallway gurney</td><td class="mono">1.5x</td><td>You chose to overbook</td></tr>
+      <tr><td>Wrong treatment</td><td class="mono">2x</td><td>Actual malpractice</td></tr>
+      <tr><td>Friendly fire</td><td class="mono">3x</td><td>Plus an incident report with your name on it</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout"><p><strong>Contagion:</strong> a turned patient who bites a living one turns them too. One neglected bed can take out a whole ward in about 30 seconds.</p></div>
+
+  <h3>How you lose</h3>
+  <ul class="list">
+    <li><strong>The ICU is overrun:</strong> the night is lost.</li>
+    <li><strong>Your rating hits zero stars:</strong> the state shuts the hospital down and the run is over.</li>
+  </ul>
+  <p class="muted">Fines can put you in debt, but debt only locks the shop. You never lose beds or roles, so a bad night is always recoverable. The morning report lists every death: <em>"Bed 3: chest pain, WebMD misdiagnosis, −$800, nurse: Andy."</em></p>
 </section>
 
 <section>

@@ -120,7 +120,44 @@ Each layer rewards a different time horizon:
 | Pharma rep | 30% off restock tomorrow |
 | Retired nurse | Joins as an NPC nurse for one night |
 
-**Failure costs:** a patient who dies turns *inside* that night, the family files a malpractice fine (charged at the morning report), and the rating drops, so tomorrow's patients are worse.
+#### Death & turning penalties (any source)
+
+**Base penalty, every death:**
+
+| # | Penalty | When |
+|---|---|---|
+| 1 | No payout (patients only pay on discharge) | Instant |
+| 2 | Their occupation perk is lost | Instant |
+| 3 | They turn after a **10-second window** | 10s later |
+| 4 | Malpractice fine × cause multiplier | Morning report |
+| 5 | Rating drops, so tomorrow's patient pool is worse | Morning report |
+
+**The 10-second window:** a flatline starts a countdown, and the team picks one:
+
+- **Code them:** Doctor's revive or defib paddles. They're back and every penalty is cancelled.
+- **Morgue run:** two people wheel the body to the morgue. They don't turn, but the fine still applies.
+- **Do nothing:** they rise inside the walls, often next to other patients.
+
+**Cause multipliers (on the fine):**
+
+| Cause | Fine | Why |
+|---|---|---|
+| Timer ran out | 1x | Neglect |
+| Killed by the horde (Runner grab, bed attacked) | 0.5x | Insurance covers half; Security failed |
+| Died on a hallway gurney | 1.5x | Overbooking was the team's choice |
+| Wrong treatment (WebMD guess, wrong med) | 2x | Actual malpractice |
+| Friendly fire | 3x + an incident report naming the player | Comedy |
+
+**Contagion:** a turned patient who bites a living patient turns them too. One neglected bed can take out a ward in about 30 seconds, so a single death is dangerous even without a big fine.
+
+**Lose conditions:**
+
+1. ICU overrun (ICU lives reach 0): the night is lost.
+2. Rating hits 0 stars: the state shuts the hospital down and the campaign ends.
+
+**Guardrail against a hopeless run:** fines can push money negative, but debt only blocks the shop. It never removes beds or roles, so a bad night stays recoverable.
+
+**Morning report** lists every death with its cause, e.g. *"Bed 3: chest pain, WebMD misdiagnosis, −$800, nurse: Andy."*
 
 The decision every day: *"the electrician is high-risk and we're out of beds. Hallway gurney?"*
 
@@ -236,6 +273,7 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 - 2 enemies: Shambler (outside) + turned patient (inside)
 - One day: choose from 5 patient cards with 3 beds + 1 hallway-gurney slot, 3-item restock shop, cash payout only
 - One 5-minute night with a single "3am" wave
+- Death penalty basics: no payout, the 10-second window (revive or morgue run), turning, flat fine
 - Win/lose screen
 
 **The MVP answers two questions:** does "my barricade is blocking my own gurney" create fun tension, and is admitting a 4th patient onto a hallway gurney tempting enough to argue about?
@@ -247,7 +285,7 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 - Proximity voice
 - Nurse and Maintenance roles, power cuts and lighting horror
 - Runner/Brute/Crawler/Screamer enemies
-- Occupation perks, emblems, hospital rating, cure research, multi-day campaign, rearranging the hospital layout
+- Cause multipliers, contagion, occupation perks, emblems, hospital rating, cure research, multi-day campaign, rearranging the hospital layout
 - Night modifiers (flu season, full moon, storm)
 - 3D art
 
@@ -272,7 +310,7 @@ Conditions, enemies, towers, roles and night timelines are Godot Resources (`.tr
 | Milestone | Adds | Est. |
 |---|---|---|
 | M2: 4 players | Steam lobbies, Nurse + Maintenance, power cuts + flashlights | +4 weekends |
-| M3: Full night | All 5 enemies, all 10 weapons, full timeline, 8–10 conditions, occupation perks | +6 weekends |
+| M3: Full night | All 5 enemies, all 10 weapons, full timeline, 8–10 conditions, occupation perks, cause multipliers + contagion | +6 weekends |
 | M4: Campaign | Multi-day runs, ~10 emblems, hospital rating, cure research win condition, layout editing, night modifiers | +6 weekends |
 | M5: Steam demo | Proximity voice, achievements, store page, Next Fest | +4 weekends |
 
